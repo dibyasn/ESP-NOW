@@ -345,5 +345,5 @@ This project makes use of ESP32's powerful features and ESP-NOW communication. T
 Feel free to contribute, report issues, or suggest enhancements. Happy building! 🚀
 
 <p align="center">
-    <a href="https://github.com/yourusername/your-repository"><img src="https://img.icons8.com/color/48/000000/github.png" alt="Contribute Icon"></a>
+    <a href="https://github.com/dibyasn"><img src="https://img.icons8.com/color/48/000000/github.png" alt="Contribute Icon"></a>
 </p>

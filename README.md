@@ -29,8 +29,6 @@ Welcome to the comprehensive guide on ESP-NOW! This document provides detailed i
     - [Handling Multiple Peers](#handling-multiple-peers)
     - [Optimizing Power Consumption](#optimizing-power-consumption)
   - [🖥️ Contributions](#-contributions)
-  - [📜 License](#-license)
-  - [📧 Contact](#-contact)
 
 ## 📖 Introduction
 ESP-NOW is a wireless communication protocol developed by Espressif Systems, the company behind the popular ESP8266 and ESP32 microcontrollers. It allows multiple devices to communicate directly with each other without the need for a traditional Wi-Fi network or router, making it ideal for IoT applications that require low-latency and low-power communication.
