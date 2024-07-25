@@ -19,6 +19,7 @@ Welcome to the Two-Wheel Drive Mobile Robot Project! This project uses an ESP32 
   - [💡 Code Explanation](#-code-explanation)
     - [Transmitter Code](#transmitter-code)
     - [Receiver Code](#receiver-code)
+    - [Customization Notes](#customization-notes)
   - [🖥️ Usage](#️-usage)
   - [🎉 Acknowledgments](#-acknowledgments)
 
@@ -39,27 +40,52 @@ ESP-NOW is a connectionless Wi-Fi communication protocol developed by Espressif.
 - **2 x ESP32 Boards**
 - **Joystick Module**
 - **DC Motors (2)**
-- **Motor Driver Module**
+- **L293D Motor Driver Module**
 - **Jumper Wires**
 - **Breadboard**
 
 ## 🔌 Circuit Diagram
 
 ### Transmitter Connections:
-| Joystick Pin | ESP32 Pin |
-|--------------|-----------|
-| VRX          | GPIO 33   |
-| VRY          | GPIO 32   |
+```
+  Joystick         Transmitter ESP32
+  ─────────────    ─────────────────
+  VRX  ──────────> GPIO 33
+  VRY  ──────────> GPIO 32
+  3.3V ──────────> 3.3V
+  GND ──────────> GND
+```
 
 ### Receiver Connections:
-| Motor Driver Pin | ESP32 Pin |
-|------------------|-----------|
-| MOTORA_ENABLE    | GPIO 23   |
-| MOTORA_INPUT_1   | GPIO 19   |
-| MOTORA_INPUT_2   | GPIO 18   |
-| MOTORB_ENABLE    | GPIO 5    |
-| MOTORB_INPUT_1   | GPIO 2    |
-| MOTORB_INPUT_2   | GPIO 4    |
+```plaintext
++------------------+           +-------------+
+|  Motor Driver    |           |   ESP32     |
+|   Module         |           |             |
+|                  |           |             |
+|   VCC            -----> +5V Power Supply   |
+|   GND            -----> GND Power Supply   |
+|   MOTORA_ENABLE  -----> GPIO 23            |
+|   MOTORA_INPUT_1 -----> GPIO 19            |
+|   MOTORA_INPUT_2 -----> GPIO 18            |
+|   MOTORB_ENABLE  -----> GPIO 5             |
+|   MOTORB_INPUT_1 -----> GPIO 2             |
+|   MOTORB_INPUT_2 -----> GPIO 4             |
++------------------+           +-------------+
+
+
+
++------------------+           +------------+
+|  Motor Driver    |           |   DC Motors|
+|   Module         |           |            |
+|                  |           |            |
+|   Vbat            -----> +V Power Supply  |
+|   GND            -----> GND Power Supply  |
+|   MOTORA_OUT1    -----> Motor A Terminal 1  |
+|   MOTORA_OUT2    -----> Motor A Terminal 2  |
+|   MOTORB_OUT1    -----> Motor B Terminal 1  |
+|   MOTORB_OUT2    -----> Motor B Terminal 2  |
++------------------+           +------------+
+```
 
 ## 🚀 Setup Instructions
 ### 1. Clone the Repository
@@ -114,10 +140,25 @@ void loop() {
 ```
 
 ### 4. Upload the Code
-- **Transmitter Code:** Upload to the first ESP32 board.
-- **Receiver Code:** Upload to the second ESP32 board.
+1. **Upload the MAC Address Code to Receiver:**
+   - Connect the receiver ESP32 to your computer.
+   - Upload the MAC address code.
+   - Open the Serial Monitor to find the MAC address of the receiver.
 
-Connect each ESP32 to your computer, select the correct board and port in the Arduino IDE, and upload the respective code.
+2. **Replace MAC Address in Transmitter Code:**
+   - Replace `broadcastAddress[]` in the transmitter code with the MAC address obtained from the receiver.
+
+3. **Upload the Transmitter Code:**
+   - Connect the transmitter ESP32 to your computer.
+   - Upload the transmitter code.
+
+4. **Upload the Receiver Code:**
+   - Connect the receiver ESP32 to your computer.
+   - Upload the receiver code.
+
+5. **Connect the Joystick and Motors:**
+   - Follow the circuit diagram to connect the joystick to the transmitter ESP32.
+   - Connect the motor driver and motors to the receiver ESP32.
 
 ## 💡 Code Explanation
 
@@ -328,10 +369,34 @@ void loop() {
 }
 ```
 
+### Customization Notes
+**Joystick Center Value Calibration:** 
+- The joystick in this project is connected to 3.3V. When at the center position, the values typically range from 1500 to 2000. 
+- If your joystick is connected to a different voltage or exhibits different center values, you can adjust the `LowL` and `HighL` accordingly.
+
+```cpp
+int LowL = 1500;
+int HighL = 2000;
+```
+
+**Motor Direction Adjustment:**
+- Motor direction control depends on how you have physically connected the motors and motor driver to the ESP32.
+- If your motor connections are different, you may need to modify the logic in the `controlMotors` function to match your setup.
+
+```cpp
+void controlMotors(int x, int y) {
+  // Your customized motor control logic here
+}
+```
+
 ## 🖥️ Usage
-Once the codes are uploaded:
-- **Transmitter:** Joystick movements are read and sent.
-- **Receiver:** Motors will move according to joystick inputs (forward, backward, left, right, or stop).
+1. Power on both the transmitter and receiver ESP32 boards.
+2. Use the joystick to control the robot:
+   - Push the joystick up to move forward.
+   - Pull the joystick down to move backward.
+   - Push the joystick left to turn left.
+   - Push the joystick right to turn right.
+   - Release the joystick to stop the robot.
 
 ## 🎉 Acknowledgments
 This project makes use of ESP32's powerful features and ESP-NOW communication. Thanks to the ESP32 community for their support and resources.
